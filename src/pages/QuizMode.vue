@@ -269,15 +269,19 @@ const cardStyle = computed(() => {
 })
 
 function onTouchStart(e: TouchEvent) {
-  touchStartX.value = e.touches[0].clientX
-  touchStartY.value = e.touches[0].clientY
+  const touch = e.touches[0]
+  if (!touch) return
+  touchStartX.value = touch.clientX
+  touchStartY.value = touch.clientY
   touchDeltaX.value = 0
   isSwiping.value = false
 }
 
 function onTouchMove(e: TouchEvent) {
-  const dx = e.touches[0].clientX - touchStartX.value
-  const dy = e.touches[0].clientY - touchStartY.value
+  const touch = e.touches[0]
+  if (!touch) return
+  const dx = touch.clientX - touchStartX.value
+  const dy = touch.clientY - touchStartY.value
   // 水平滑动幅度大于垂直时才算滑动切题
   if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 10) {
     isSwiping.value = true
