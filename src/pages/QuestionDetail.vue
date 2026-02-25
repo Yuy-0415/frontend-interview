@@ -146,12 +146,14 @@ const highlightedCode = computed(() => {
 function goPrev() {
   if (!category.value || currentIndex.value <= 0) return
   const prev = category.value.questions[currentIndex.value - 1]
+  if (!prev) return
   router.replace(`/question/${categoryId.value}/${prev.id}`)
 }
 
 function goNext() {
   if (!category.value || currentIndex.value >= category.value.questions.length - 1) return
   const next = category.value.questions[currentIndex.value + 1]
+  if (!next) return
   router.replace(`/question/${categoryId.value}/${next.id}`)
 }
 

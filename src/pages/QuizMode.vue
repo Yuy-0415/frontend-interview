@@ -75,10 +75,10 @@
         <!-- 正面：题目 -->
         <div v-if="!flipped" class="p-6 flex-1 flex flex-col">
           <div class="flex items-center gap-2 mb-4">
-            <DifficultyTag :level="currentQuestion.difficulty" />
-            <span class="text-xs text-gray-400">{{ getCategoryName(currentQuestion.id) }}</span>
+            <DifficultyTag :level="currentQuestion!.difficulty" />
+            <span class="text-xs text-gray-400">{{ getCategoryName(currentQuestion!.id) }}</span>
           </div>
-          <h2 class="text-base font-bold text-gray-800 leading-relaxed flex-1">{{ currentQuestion.title }}</h2>
+          <h2 class="text-base font-bold text-gray-800 leading-relaxed flex-1">{{ currentQuestion!.title }}</h2>
           <p class="text-xs text-gray-400 mt-4 text-center" aria-hidden="true">👆 点击查看答案</p>
         </div>
         <!-- 背面：答案 -->
@@ -99,11 +99,11 @@
         >← 上一题</button>
         <button
           @click="toggleMastered"
-          :aria-pressed="userStore.isMastered(currentQuestion.id)"
-          :aria-label="userStore.isMastered(currentQuestion.id) ? '取消掌握标记' : '标记为已掌握'"
+          :aria-pressed="userStore.isMastered(currentQuestion!.id)"
+          :aria-label="userStore.isMastered(currentQuestion!.id) ? '取消掌握标记' : '标记为已掌握'"
           class="flex-1 py-2.5 rounded-lg text-sm font-medium text-white transition-all active:scale-95"
-          :class="userStore.isMastered(currentQuestion.id) ? 'bg-green-500' : 'bg-blue-600'"
-        >{{ userStore.isMastered(currentQuestion.id) ? '✓ 已掌握' : '标记掌握' }}</button>
+          :class="userStore.isMastered(currentQuestion!.id) ? 'bg-green-500' : 'bg-blue-600'"
+        >{{ userStore.isMastered(currentQuestion!.id) ? '✓ 已掌握' : '标记掌握' }}</button>
         <button
           @click="nextCard"
           :aria-label="currentIdx >= quizQuestions.length - 1 ? '完成刷题' : '下一题'"
@@ -173,7 +173,7 @@ const quizQuestions = computed<Question[]>(() => {
   return cat ? cat.questions : []
 })
 
-const currentQuestion = computed(() => quizQuestions.value[currentIdx.value])
+const currentQuestion = computed<Question | undefined>(() => quizQuestions.value[currentIdx.value])
 const currentRenderedAnswer = computed(() => {
   if (!currentQuestion.value) return ''
   return marked.parse(currentQuestion.value.answer) as string
@@ -236,7 +236,7 @@ function nextCard() {
 }
 
 function toggleMastered() {
-  const qid = currentQuestion.value.id
+  const qid = currentQuestion.value!.id
   // 追踪本次刷题中标记掌握的题目
   if (!userStore.isMastered(qid)) {
     masteredDuringQuiz.add(qid)
