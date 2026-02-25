@@ -4,9 +4,9 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vite.dev/config/
 export default defineConfig({
-  // GitHub Pages 部署时设置为仓库名，本地开发用 '/'
-  // 部署前改成你的仓库名，例如 '/frontend-interview/'
-  base: '/frontend-interview/',
+  // 使用自定义域名时 base 设为 '/'
+  // 如果没有自定义域名，用 GitHub Pages 默认路径则改为 '/frontend-interview/'
+  base: '/',
   plugins: [
     vue(),
     VitePWA({
